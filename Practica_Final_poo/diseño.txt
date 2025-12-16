@@ -1,0 +1,80 @@
+Clases:
+
+1.Producto
+	atribute
+		final String codigoProducto (unique)
+		String nombre
+		String categoria
+		float precioUnitario
+		int stock
+
+	methods 
+		private restarStock
+		public getCodigoProducto
+		public getNombre
+		public getCategoria
+		public getPrecioUnitario
+		public getStock
+			
+	
+2.Clientes		
+	atribute
+		final String codigoCliente (unique)
+		String nombre
+		int telefono
+	
+	methods
+		public getCodigoCliente
+		public getNombre
+		public getTeefono
+
+3.Pedido 
+	atribute
+		final Cliente cliente
+		float iva
+		ArrayList<LineasProducto> lineasProducto
+		
+	method
+		public getCodigoClienteAsociado
+		public getIva
+		public getLineasProducto
+
+4.lineasProducto 
+	atribute
+		final Producto producto
+		int unidadesSolicitadas (>= 1)
+		int unidadesUnitariasAplicadas
+	
+	method
+		public getCodigoProductoAsociado
+		public getunidadesSolicitadas
+		public getUnidadesUnitariasAsociadas
+
+5.TiendaService implements Producto,Cliente,Pedido Repository
+
+6.Tests (smoke class) -> contiene el main para probar 
+
+7.Main
+
+interface:
+
+1.ProductoRepository
+	method
+		void altaProducto
+		int  ajustarStock (>=0)
+		Producto consultarProducto
+		void listadoProductos (copia inmutable)
+		void borrarProducto
+			(Si un pedido esta asociado a un producto no se puede
+			borrar )
+
+2.ClienteRepository 
+		void altaCliente
+		Clientes consultarClientes
+		void listarClientes (copia inmutable)		
+
+3.PedidosRepository 
+		void crearPedido
+		void añadirLinea
+		boolean confirmarPedido
+		Pedido consultarPedido
