@@ -26,7 +26,7 @@ Clases:
 	methods
 		public getCodigoCliente
 		public getNombre
-		public getTeefono
+		public getTelefono
 
 3.Pedido 
 	atribute
