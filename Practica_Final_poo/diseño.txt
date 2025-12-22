@@ -17,7 +17,7 @@ Clases:
 		public getStock
 			
 	
-2.Clientes		
+2.Capa_Dominio
 	atribute
 		final String codigoCliente (unique)
 		String nombre
@@ -54,7 +54,7 @@ Clases:
 
 6.Tests (smoke class) -> contiene el main para probar 
 
-7.Main
+7.Test
 
 interface:
 
@@ -70,7 +70,7 @@ interface:
 
 2.ClienteRepository 
 		void altaCliente
-		Clientes consultarClientes
+		Capa_Dominio consultarClientes
 		void listarClientes (copia inmutable)		
 
 3.PedidosRepository 
