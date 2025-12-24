@@ -9,7 +9,8 @@ public class Pedido {
     private ArrayList<LineaPedido> lineaPedido;
     private float iva;
 
-    public Pedido(Cliente cliente, float iva) {
+    public Pedido(Cliente cliente, float iva) throws IllegalArgumentException {
+        if (iva < 0 || iva > 1) {throw new IllegalArgumentException("El iva no puede ser negativo");}
         this.cliente = cliente;
         this.lineaPedido = new ArrayList<LineaPedido>();
         this.iva = iva;

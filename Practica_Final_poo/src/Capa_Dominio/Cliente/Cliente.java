@@ -5,7 +5,8 @@ public class Cliente {
     private String nombre;
     private int telefono;
 
-    public void  Clientes (String codcliente,String nombre, int telefono ) {
+    public void  Clientes (String codcliente,String nombre, int telefono ) throws IllegalArgumentException {
+        if (telefono < 0) {throw new IllegalArgumentException("El teléfono no puede ser negativo");}
         this.codcliente = codcliente;
         this.nombre = nombre;
         this.telefono = telefono;

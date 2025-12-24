@@ -65,7 +65,7 @@ interface:
 		Producto consultarProducto
 		void listadoProductos (copia inmutable)
 		void borrarProducto
-			(Si un pedido esta asociado a un producto no se puede
+			(Si un producto esta asociado a un pedido confirmado no se puede
 			borrar )
 
 2.ClienteRepository 
