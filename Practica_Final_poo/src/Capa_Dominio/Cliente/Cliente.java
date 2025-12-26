@@ -3,10 +3,9 @@ package Capa_Dominio.Cliente;
 public class Cliente {
     private String codcliente;
     private String nombre;
-    private int telefono;
+    private String telefono;
 
-    public void  Clientes (String codcliente,String nombre, int telefono ) throws IllegalArgumentException {
-        if (telefono < 0) {throw new IllegalArgumentException("El teléfono no puede ser negativo");}
+    public void  Clientes (String codcliente,String nombre, String telefono ) throws IllegalArgumentException {
         this.codcliente = codcliente;
         this.nombre = nombre;
         this.telefono = telefono;
@@ -19,7 +18,11 @@ public class Cliente {
         return this.nombre;
     }
 
-    public int getTelefono() {
+    public String getTelefono() {
         return this.telefono;
+    }
+
+    public String toString() {
+        return  "Codigo: "+ this.codcliente + "Nombre: "+ this.nombre + "Telefono: "+ this.telefono + "\n";
     }
 }

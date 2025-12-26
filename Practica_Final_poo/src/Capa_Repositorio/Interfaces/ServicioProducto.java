@@ -9,7 +9,7 @@ import java.util.List;
 public interface ServicioProducto {
 
     void alta(Producto producto);
-    void baja(String codigo, ArrayList<LineaPedido> LineaPedido);
+    void baja(String codigo);
     List<Producto> consultar(String codigo);
     List<Producto> listar();
 }

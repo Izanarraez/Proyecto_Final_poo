@@ -9,7 +9,11 @@ import java.util.List;
 
 public class RepositorioCliente implements ServicioCliente {
 
-    private ArrayList<Cliente> almacenClientes = new ArrayList<Cliente>();
+    private final ArrayList<Cliente> almacenClientes;
+
+    public RepositorioCliente(){
+        this.almacenClientes = new ArrayList<Cliente>();
+    }
 
     @Override
     public void alta(Cliente cliente) {

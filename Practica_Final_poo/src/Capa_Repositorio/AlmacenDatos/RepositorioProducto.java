@@ -1,6 +1,7 @@
 package Capa_Repositorio.AlmacenDatos;
 
 import Capa_Dominio.Pedido.LineaPedido;
+import Capa_Dominio.Pedido.Pedido;
 import Capa_Dominio.Producto.Producto;
 import Capa_Repositorio.Interfaces.ServicioProducto;
 
@@ -10,8 +11,11 @@ import java.util.List;
 
 public class RepositorioProducto implements ServicioProducto {
 
-    private ArrayList<Producto> almacenProductos = new ArrayList<Producto>();
+    private final ArrayList<Producto> almacenProductos;
 
+    public RepositorioProducto(){
+        this.almacenProductos = new ArrayList<Producto>();
+    }
 
     @Override
     public void alta(Producto producto) {
@@ -19,10 +23,10 @@ public class RepositorioProducto implements ServicioProducto {
     }
 
     @Override
-    public void baja(String codigo, ArrayList<LineaPedido> LineaPedido) {
+    public void baja(String codigo) {
 
         for(int i = 0; i < almacenProductos.size(); i++){
-            if(LineaPedido.get(i).getProducto().getCodigoProducto().equals(codigo)){
+            if(almacenProductos.get(i).getCodigoProducto().equals(codigo)){
                 almacenProductos.remove(i);
             }
         }

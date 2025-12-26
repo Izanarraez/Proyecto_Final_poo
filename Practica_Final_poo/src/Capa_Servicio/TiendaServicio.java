@@ -7,16 +7,11 @@ import Capa_Dominio.Producto.Producto;
 import Capa_Repositorio.AlmacenDatos.RepositorioCliente;
 import Capa_Repositorio.AlmacenDatos.RepositorioPedido;
 import Capa_Repositorio.AlmacenDatos.RepositorioProducto;
-import Capa_Repositorio.Interfaces.ServicioCliente;
-import Capa_Repositorio.Interfaces.ServicioPedido;
-import Capa_Repositorio.Interfaces.ServicioProducto;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
 
-public class TiendaServicio implements ServicioProducto, ServicioCliente, ServicioPedido {
+public class TiendaServicio {
 
     RepositorioCliente repositorioCliente;
     RepositorioProducto repositorioProducto;
@@ -33,7 +28,23 @@ public class TiendaServicio implements ServicioProducto, ServicioCliente, Servic
         this.repositorioProducto.alta(producto);
     }
 
-    public void ajustarStock(String codigo, int cantidad, boolean incremento) {}
+    public void ajustarStock(String codigo, int cantidad, boolean incremento) {
+        for (int i = 0; i < repositorioProducto.listar().size(); i++){
+            if (repositorioProducto.listar().get(i).getCodigoProducto().equals(codigo)){
+                try {
+                    if (incremento) {
+                        repositorioProducto.listar().get(i).incrementarStock(cantidad);
+                    }
+                    else{
+                        repositorioProducto.listar().get(i).decrementarStock(cantidad);
+                    }
+                }catch (Exception e){
+                    e.getMessage();
+                    return;
+                }
+            }
+        }
+    }
 
     public List<Producto> consultarProductos(String nombre) {
         return(this.repositorioProducto.consultar(nombre));
@@ -43,7 +54,41 @@ public class TiendaServicio implements ServicioProducto, ServicioCliente, Servic
         return(this.repositorioProducto.listar());
     }
 
-    public void borrarProducto(String codigo, ArrayList<LineaPedido> LineaPedidos) {
+    public void borrarProducto(String codigo) {
+
+        try{
+
+            boolean nombreProducto = false;
+            boolean pedidoProducto = false;
+
+            for (int i = 0; i < repositorioProducto.listar().size(); i++) {
+                if (repositorioProducto.listar().get(i).getCodigoProducto().equals(codigo)) {
+                    nombreProducto = true;
+                }
+            }
+            for (int i = 0; i < repositorioPedido.listar().size(); i++) {
+                for (int j = 0; j < repositorioPedido.listar().get(i).getLineaPedido().size(); j++) {
+                    if (repositorioPedido.listar().get(i).getLineaPedido().get(j).getProducto().getCodigoProducto().equals(codigo)) {
+                        pedidoProducto = true;
+                    }
+                }
+            }
+
+
+            if (nombreProducto) {
+                if (pedidoProducto) {
+                    throw  new IllegalArgumentException("No se puede borrar este producto porque esta asociado a un pedido");
+                }
+                else {
+                    repositorioProducto.baja(codigo);
+                }
+            }
+            else {
+                throw new IllegalArgumentException("No se ha encontrado el producto");
+            }
+        }catch (Exception e){
+            e.getMessage();
+        }
     }
 
 
@@ -97,7 +142,13 @@ public class TiendaServicio implements ServicioProducto, ServicioCliente, Servic
         return true;
     }
 
-    public List<Pedido> consultarPedido() {
-    } //Falta buscar parametros
+    public void consultarPedido(String codigo) {
+
+        ArrayList<Pedido> pedidos = (ArrayList<Pedido>) this.repositorioPedido.consultar(codigo);
+
+        for (Pedido pedido : pedidos) {
+            pedido.toString();
+        }
+    }
 
 }

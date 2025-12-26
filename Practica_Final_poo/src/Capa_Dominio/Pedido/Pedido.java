@@ -24,4 +24,8 @@ public class Pedido {
     public float getIva() {
         return this.iva;
     }
+
+    public String toString(){
+        return this.cliente.toString() + "Linea: " + this.lineaPedido.toString() + "IVA: " + this.iva + "\n";
+    }
 }
