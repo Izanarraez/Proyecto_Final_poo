@@ -26,7 +26,7 @@ public class RepositorioCliente implements ServicioCliente {
         ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 
         for(Cliente cliente: almacenClientes){
-            if (cliente.getNombre().equals(nombre)){
+            if (cliente.getNombre().toLowerCase().contains(nombre.toLowerCase())){
                 clientes.add(cliente);
             }
         }

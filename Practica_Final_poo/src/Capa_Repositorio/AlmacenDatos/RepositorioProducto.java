@@ -28,6 +28,7 @@ public class RepositorioProducto implements ServicioProducto {
         for(int i = 0; i < almacenProductos.size(); i++){
             if(almacenProductos.get(i).getCodigoProducto().equals(codigo)){
                 almacenProductos.remove(i);
+                return;
             }
         }
     }
@@ -37,7 +38,7 @@ public class RepositorioProducto implements ServicioProducto {
         ArrayList<Producto> productos = new ArrayList<Producto>();
 
         for(Producto producto: almacenProductos){
-            if (producto.getNombre().equals(nombre)){
+            if (producto.getNombre().toLowerCase().contains(nombre.toLowerCase())){
                 productos.add(producto);
             }
         }

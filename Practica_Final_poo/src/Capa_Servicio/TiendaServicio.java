@@ -8,7 +8,6 @@ import Capa_Repositorio.AlmacenDatos.RepositorioCliente;
 import Capa_Repositorio.AlmacenDatos.RepositorioPedido;
 import Capa_Repositorio.AlmacenDatos.RepositorioProducto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TiendaServicio {
@@ -29,65 +28,63 @@ public class TiendaServicio {
     }
 
     public void ajustarStock(String codigo, int cantidad, boolean incremento) {
-        for (int i = 0; i < repositorioProducto.listar().size(); i++){
-            if (repositorioProducto.listar().get(i).getCodigoProducto().equals(codigo)){
+        for (Producto producto : this.repositorioProducto.listar()) {
+            if (producto.getCodigoProducto().equals(codigo)){
                 try {
                     if (incremento) {
-                        repositorioProducto.listar().get(i).incrementarStock(cantidad);
+                        producto.incrementarStock(cantidad);
                     }
                     else{
-                        repositorioProducto.listar().get(i).decrementarStock(cantidad);
+                        producto.decrementarStock(cantidad);
                     }
                 }catch (Exception e){
-                    e.getMessage();
-                    return;
+                    System.out.println("Error al ajustar stock: " + e.getMessage());
                 }
+                return;
             }
         }
     }
 
     public List<Producto> consultarProductos(String nombre) {
-        return(this.repositorioProducto.consultar(nombre));
+        return this.repositorioProducto.consultar(nombre);
     }
 
     public List<Producto> listadoProductos() {
-        return(this.repositorioProducto.listar());
+        return this.repositorioProducto.listar();
     }
 
     public void borrarProducto(String codigo) {
 
-        try{
+        boolean existeProducto = false;
+        boolean pedidoConfirmadoEnProducto = false;
 
-            boolean nombreProducto = false;
-            boolean pedidoProducto = false;
-
-            for (int i = 0; i < repositorioProducto.listar().size(); i++) {
-                if (repositorioProducto.listar().get(i).getCodigoProducto().equals(codigo)) {
-                    nombreProducto = true;
-                }
+        for (Producto producto : this.repositorioProducto.listar()) {
+            if (producto.getCodigoProducto().equals(codigo)){
+                existeProducto = true;
+                break;
             }
-            for (int i = 0; i < repositorioPedido.listar().size(); i++) {
-                for (int j = 0; j < repositorioPedido.listar().get(i).getLineaPedido().size(); j++) {
-                    if (repositorioPedido.listar().get(i).getLineaPedido().get(j).getProducto().getCodigoProducto().equals(codigo)) {
-                        pedidoProducto = true;
+        }
+
+        if (!existeProducto) {
+            throw new IllegalArgumentException("No se ha encontrado el producto con código: " + codigo);
+        }
+
+        for (Pedido pedido : this.repositorioPedido.listar()) {
+            if (pedido.isConfirmado()){
+                for (LineaPedido linea : pedido.getLineaPedido()) {
+                    if (linea.getProducto().getCodigoProducto().equals(codigo)) {
+                        pedidoConfirmadoEnProducto = true;
+                        break;
                     }
                 }
             }
+            if (pedidoConfirmadoEnProducto) break;
+        }
 
-
-            if (nombreProducto) {
-                if (pedidoProducto) {
-                    throw  new IllegalArgumentException("No se puede borrar este producto porque esta asociado a un pedido");
-                }
-                else {
-                    repositorioProducto.baja(codigo);
-                }
-            }
-            else {
-                throw new IllegalArgumentException("No se ha encontrado el producto");
-            }
-        }catch (Exception e){
-            e.getMessage();
+        if (pedidoConfirmadoEnProducto) {
+            throw new IllegalArgumentException("No se puede borrar: Producto asociado a un pedido confirmado.");
+        } else {
+            repositorioProducto.baja(codigo);
         }
     }
 
@@ -99,11 +96,11 @@ public class TiendaServicio {
     }
 
     public List<Cliente> consultarClientes(String nombre) {
-        return(this.repositorioCliente.consultar(nombre));
+        return this.repositorioCliente.consultar(nombre);
     }
 
     public List<Cliente> listadoClientes() {
-        return (this.repositorioCliente.listar());
+        return this.repositorioCliente.listar();
     }
 
 
@@ -114,41 +111,46 @@ public class TiendaServicio {
     }
 
     public void añadirLineaPedido(Pedido pedido, Producto producto, int unidades) {
-        LineaPedido lineaPedido;
-        try {
-            lineaPedido = new LineaPedido(producto, unidades, producto.getPrecioUnitario());
-        } catch (Exception e) {
-            e.getMessage();
+        if (pedido.isConfirmado()) {
+            System.out.println("Error: No se pueden añadir líneas a un pedido confirmado.");
             return;
         }
-        pedido.getLineaPedido().add(lineaPedido);
+        try {
+            LineaPedido lineaPedido = new LineaPedido(producto, unidades, producto.getPrecioUnitario());
+            pedido.getLineaPedido().add(lineaPedido);
+        } catch (Exception e) {
+            System.out.println("Error al añadir línea de pedido: " + e.getMessage());
+        }
     }
 
     public boolean confirmarPedido(Pedido pedido) {
-        LineaPedido lineaPedido;
-        int unidades;
-        int i;
-        try {
-            for (i = 0 ; i < pedido.getLineaPedido().size() ; i++){
-                lineaPedido = (LineaPedido) pedido.getLineaPedido().get(i);
-                unidades = lineaPedido.getUnidades();
-                lineaPedido.getProducto().decrementarStock(unidades);
-            }
-        }catch ( Exception e){
-                System.out.println("No hay stock suficiente de algunos de los productos");
-                return false;
+
+        if (pedido.isConfirmado()) {
+            System.out.println("El pedido ya estaba confirmado.");
+            return true;
         }
-        System.out.println("Pedido realizado");
-        return true;
+
+        for (LineaPedido lineaPedido : pedido.getLineaPedido()) {
+            if (lineaPedido.getProducto().getStock() < lineaPedido.getUnidades()){
+                System.out.println("Error: Stock insuficiente para el producto " + lineaPedido.getProducto().getNombre());
+                return false;
+            }
+        }
+        try {
+            for (LineaPedido lineaPedido : pedido.getLineaPedido()) {
+                lineaPedido.getProducto().decrementarStock(lineaPedido.getUnidades());
+            }
+            pedido.setConfirmado(true);
+            System.out.println("Pedido confirmado correctamente");
+            return true;
+        }catch ( Exception e){
+            System.out.println("Error al confirmar pedido: " + e.getMessage());
+            return false;
+        }
     }
 
-    public void consultarPedido(String codigo) {
-
-        ArrayList<Pedido> pedidos = (ArrayList<Pedido>) this.repositorioPedido.consultar(codigo);
-
-        for (Pedido pedido : pedidos) {
-            pedido.toString();
-        }
+    public List<Pedido> consultarPedido(String codigo) {
+        return repositorioPedido.consultar(codigo);
     }
 
 }
