@@ -21,7 +21,7 @@ Clases:
 	atribute
 		final String codigoCliente (unique)
 		String nombre
-		int telefono
+		String telefono
 	
 	methods
 		public getCodigoCliente
