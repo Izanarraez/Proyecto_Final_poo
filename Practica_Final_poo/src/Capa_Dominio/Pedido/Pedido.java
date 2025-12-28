@@ -10,7 +10,7 @@ public class Pedido {
     private float iva;
     private boolean confirmado;
 
-    public Pedido(Cliente cliente, float iva) throws IllegalArgumentException {
+    public Pedido(Cliente cliente , float iva) throws IllegalArgumentException {
         if (iva < 0 || iva > 1) {throw new IllegalArgumentException("El iva no puede ser negativo");}
         this.cliente = cliente;
         this.lineaPedido = new ArrayList<LineaPedido>();
@@ -43,6 +43,6 @@ public class Pedido {
     }
 
     public String toString(){
-        return "Cliente:" + this.cliente.toString() + "Confirmado:"+ this.isConfirmado() +"Linea: " + this.lineaPedido.toString() + "IVA: " + this.iva + "\n";
+        return " Cliente: [" + this.cliente.toString() + "], Confirmado: "+ this.isConfirmado() +", Linea: " + this.lineaPedido.toString() + ", IVA: " + this.iva + "\n";
     }
 }

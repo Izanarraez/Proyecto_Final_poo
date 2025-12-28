@@ -5,7 +5,7 @@ public class Cliente {
     private String nombre;
     private String telefono;
 
-    public void  Clientes (String codcliente,String nombre, String telefono ) throws IllegalArgumentException {
+    public Cliente (String codcliente, String nombre, String telefono ) {
         this.codcliente = codcliente;
         this.nombre = nombre;
         this.telefono = telefono;
@@ -23,6 +23,6 @@ public class Cliente {
     }
 
     public String toString() {
-        return  "Codigo: "+ this.codcliente + "Nombre: "+ this.nombre + "Telefono: "+ this.telefono + "\n";
+        return  " Codigo: "+ this.codcliente + ", Nombre: "+ this.nombre + ", Telefono: "+ this.telefono + "\n";
     }
 }
