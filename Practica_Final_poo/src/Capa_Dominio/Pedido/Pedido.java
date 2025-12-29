@@ -11,7 +11,7 @@ public class Pedido {
     private boolean confirmado;
 
     public Pedido(Cliente cliente , float iva) throws IllegalArgumentException {
-        if (iva < 0 || iva > 1) {throw new IllegalArgumentException("El iva no puede ser negativo");}
+        if (iva < 0 || iva > 1) {throw new IllegalArgumentException("El iva no puede ser negativo o mayor que 1");}
         this.cliente = cliente;
         this.lineaPedido = new ArrayList<LineaPedido>();
         this.iva = iva;

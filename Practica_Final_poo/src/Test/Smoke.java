@@ -10,12 +10,15 @@ import Capa_Servicio.TiendaServicio;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Smoke {
     public static void main(String[] args) {
+        Cliente cliente = new Cliente("h111", "Juan", "89987987689");
+        Producto producto = new Producto("hidhiqhd", "Yogur", "Alimento", 1.5F, 6);
+        LineaPedido lineaPedido = new LineaPedido(producto, 4, producto.getPrecioUnitario());
+        Pedido pedido = new Pedido(cliente, 0.21F);
+        TiendaServicio tiendaServicio = new TiendaServicio();
+        Producto producto2 = new Producto("hidhiqhd2", "Yogur2", "Alimento", 2F, 2);
+        Pedido pedido2 = new Pedido(cliente, 0.21F);
         try {
-            Cliente cliente = new Cliente("h111", "Juan", "89987987689");
-            Producto producto = new Producto("hidhiqhd", "Yogur", "Alimento", 1.5F, 6);
-            LineaPedido lineaPedido = new LineaPedido(producto, 4, producto.getPrecioUnitario());
-            Pedido pedido = new Pedido(cliente, 0.21F);
-            TiendaServicio tiendaServicio = new TiendaServicio();
+
             tiendaServicio.crearPedido(pedido);
             tiendaServicio.altaCliente(cliente);
             tiendaServicio.altaProducto(producto);
@@ -44,8 +47,51 @@ public class Smoke {
                 System.out.println(tiendaServicio.listadoProductos().get(i));
             }
             tiendaServicio.confirmarPedido(pedido);
+            tiendaServicio.crearPedido(pedido2);
+            tiendaServicio.añadirLineaPedido(pedido2, producto2, 3);
+            tiendaServicio.borrarProducto("hidhiqhd2");
         }catch (Exception e){
-            e.getMessage();
+            System.out.println(e.getMessage());
+        }
+        try{
+            tiendaServicio.borrarProducto("hidhiqhd");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        try{
+            LineaPedido lineaPedidop = new LineaPedido(producto, -1, 4);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        try{
+            Pedido pedidop = new Pedido(cliente, 12);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        try{
+            Producto productop = new Producto("hidhiqhd3", "Yogur3", "Alimento", -3, 6);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        try{
+            Producto productop = new Producto("hidhiqhd3", "Yogur3", "Alimento", 1F, -1);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        try{
+            producto2.setPrecioUnitario(-5);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        try{
+            producto2.decrementarStock(6);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        try{
+            tiendaServicio.borrarProducto("hidhiqhdtyy");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
         }
     }
 }

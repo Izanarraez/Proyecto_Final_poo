@@ -38,7 +38,7 @@ public class Producto {
         return stock;
     }
 
-    public void setPrecioUnitario(float precioUnitario) {
+    public void setPrecioUnitario(float precioUnitario) throws IllegalArgumentException {
         if (precioUnitario <= 0){
             throw new IllegalArgumentException("El precio unitario no puede ser negativo");
         }
@@ -49,7 +49,7 @@ public class Producto {
         this.stock += unidades;
     }
 
-    public void decrementarStock(int unidades){
+    public void decrementarStock(int unidades) throws IllegalArgumentException{
         if(stock - unidades < 0){
             throw new IllegalArgumentException("El stock no puede ser negativo");
         }

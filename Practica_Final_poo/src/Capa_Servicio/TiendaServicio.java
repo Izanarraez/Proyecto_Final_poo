@@ -53,7 +53,7 @@ public class TiendaServicio {
         return this.repositorioProducto.listar();
     }
 
-    public void borrarProducto(String codigo) {
+    public void borrarProducto(String codigo) throws IllegalArgumentException{
 
         boolean existeProducto = false;
         boolean pedidoConfirmadoEnProducto = false;
