@@ -55,8 +55,4 @@ public class Producto {
         }
         this.stock -= unidades;
     }
-
-    public String toString(){
-        return " Codigo: "+this.codigoProducto + ", Nombre: "+ this.nombre + ", Categoria: "+ this.categoria + ", PrecioUnitario: "+ this.precioUnitario + ", Stock: "+this.stock + "\n";
-    }
 }

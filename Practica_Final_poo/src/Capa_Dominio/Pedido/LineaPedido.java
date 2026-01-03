@@ -28,8 +28,4 @@ public class LineaPedido {
     public float getPrecioAplicado() {
         return precioAplicado;
     }
-
-    public String toString() {
-        return this.producto.toString() + ", Unidades: "+ this.unidades + ", Precio Aplicado: "+ this.precioAplicado + "\n";
-    }
 }

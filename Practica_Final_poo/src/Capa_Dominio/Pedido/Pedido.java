@@ -51,8 +51,4 @@ public class Pedido {
         }
         return total * (1 + iva);
     }
-
-    public String toString(){
-        return " Cliente: [" + this.cliente.toString() + "], Confirmado: "+ this.isConfirmado() +", Linea: " + this.lineaPedido.toString() + ", IVA: " + this.iva + "\n";
-    }
 }

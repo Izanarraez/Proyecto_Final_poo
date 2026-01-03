@@ -15,130 +15,113 @@ public class Smoke {
 
         TiendaServicio tiendaServicio = new TiendaServicio();
 
-        System.out.println("Alta Clientes");
-        Cliente cliente = new Cliente("h111", "Juan", "89987987689");
-        Cliente cliente2 = new Cliente("h125", "Ana", "587496222");
+        Cliente juan = null;
+        Producto yogur = null, pan = null;
+        Pedido pedido = null;
+
+        System.out.println("//--Casos de Uso--//");
 
         try {
-            tiendaServicio.altaCliente(cliente);
-            tiendaServicio.altaCliente(cliente2);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
+            juan = new Cliente("C001", "Juan", "89987987689");
 
-        System.out.println("Alta Productos");
-        Producto producto = new Producto("hidhiqhd", "Yogur", "Alimento", 1.5F, 6);
-        Producto producto2 = new Producto("hidhiqhd2", "Yogur2", "Alimento", 2F, 2);
-        Producto producto3 = new Producto("hidhiqhd3", "Sarten", "Utensilio", 12.5F, 5);
+            tiendaServicio.altaCliente(juan);
 
-        try {
-            tiendaServicio.altaProducto(producto);
-            tiendaServicio.altaProducto(producto2);
-            tiendaServicio.altaProducto(producto3);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
+            yogur = new Producto("P001", "Yogur", "Lacteos", 1.5F, 20);
+            pan = new Producto("P002", "Pan", "Panaderia", 2F, 10);
 
-        System.out.println("Alta Pedidos");
-        Pedido pedido = new Pedido(cliente, 0.21F);
-        Pedido pedido2 = new Pedido(cliente, 0.21F);
-        Pedido pedido3 = new Pedido(cliente2, 0.21F);
+            tiendaServicio.altaProducto(yogur);
+            tiendaServicio.altaProducto(pan);
 
-        try {
-            tiendaServicio.crearPedido(pedido);
-            tiendaServicio.crearPedido(pedido2);
-            tiendaServicio.crearPedido(pedido3);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
+            System.out.println("[Cliente y productos creados correctamente]");
 
-        System.out.println("Alta Linea de Pedidos");
-        LineaPedido lineaPedido = new LineaPedido(producto, 4, producto.getPrecioUnitario());
-        LineaPedido lineaPedido2 = new LineaPedido(producto3, 5, producto.getPrecioUnitario());
-
-        try {
-            tiendaServicio.añadirLineaPedido(pedido, lineaPedido.getProducto(), lineaPedido.getUnidades());
-            tiendaServicio.añadirLineaPedido(pedido2, lineaPedido.getProducto(), lineaPedido.getUnidades());
-            tiendaServicio.añadirLineaPedido(pedido3, lineaPedido2.getProducto(), lineaPedido.getUnidades());
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-
-        try {
+            pedido = new Pedido(juan, 0.21F);
 
             tiendaServicio.crearPedido(pedido);
-            tiendaServicio.altaCliente(cliente);
-            tiendaServicio.altaProducto(producto);
-            tiendaServicio.añadirLineaPedido(pedido, lineaPedido.getProducto(), lineaPedido.getUnidades());
-            tiendaServicio.consultarClientes("Juan");
-            for (int i = 0 ; i<tiendaServicio.consultarClientes("Juan").size(); i++){
-                System.out.println(tiendaServicio.consultarClientes("Juan").get(i));
-            }
-            tiendaServicio.consultarPedido("h111");
-            for (int i = 0 ; i<tiendaServicio.consultarPedido("h111").size(); i++){
-                System.out.println(tiendaServicio.consultarPedido("h111").get(i));
-            }
-            tiendaServicio.consultarProductos("hidhiqhd");
 
-            for (int i = 0 ; i<tiendaServicio.consultarProductos("hidhiqhd").size(); i++){
-                System.out.println(tiendaServicio.consultarProductos("hidhiqhd").get(i));
-            }
-            tiendaServicio.listadoClientes();
+            tiendaServicio.añadirLineaPedido(pedido,yogur,4);
+            tiendaServicio.añadirLineaPedido(pedido,pan,2);
 
-            for (int i = 0 ; i<tiendaServicio.listadoClientes().size(); i++){
-                System.out.println(tiendaServicio.listadoClientes().get(i));
-            }
-            tiendaServicio.listadoProductos();
+            System.out.println("[Pedido creado correctamente y Lineas de Pedido añadidas correctamente]");
 
-            for (int i = 0 ; i<tiendaServicio.listadoProductos().size(); i++){
-                System.out.println(tiendaServicio.listadoProductos().get(i));
-            }
             tiendaServicio.confirmarPedido(pedido);
-            tiendaServicio.crearPedido(pedido2);
-            tiendaServicio.añadirLineaPedido(pedido2, producto2, 3);
-            tiendaServicio.borrarProducto("hidhiqhd2");
+
+            System.out.println("[Pedido confirmado correctamente]");
+
+            System.out.println("** Detalles de pedido **");
+            for (LineaPedido lineaPedido : pedido.getLineaPedido()){
+                System.out.println("Nombre producto:"+lineaPedido.getProducto().getNombre()+
+                                    " Unidades producto:"+ lineaPedido.getUnidades()+
+                                    " Precio Aplicado:"+lineaPedido.getPrecioAplicado());
+            }
+            System.out.println("Precio total con iva " + pedido.calcularTotalConIva());
+
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            System.out.println("Se ha producido un fallo en:"+ e.getMessage());
         }
+
+        System.out.println("//--Reglas de Negocio--//");
+
+        System.out.println("Test 1: Stock agotado sumando varias lineas de Pedido");
+        try {
+            Pedido pedidoFallo = new Pedido(juan, 0.21F);
+            tiendaServicio.crearPedido(pedidoFallo);
+
+            tiendaServicio.añadirLineaPedido(pedidoFallo,pan,4);
+            tiendaServicio.añadirLineaPedido(pedidoFallo,pan,5);
+
+            tiendaServicio.confirmarPedido(pedidoFallo);
+
+        }catch (Exception e){
+            System.out.println("Se ha producido el siguinete error "+e.getMessage());
+        }
+
+        System.out.println("Test 2: Modificar pedido ya confirmado");
         try{
-            tiendaServicio.borrarProducto("hidhiqhd");
+            tiendaServicio.añadirLineaPedido(pedido,yogur,1);
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            System.out.println("Se ha producido el siguinete error "+e.getMessage());
         }
+
+        System.out.println("Test 3: Borrar producto en pedido confirmado");
         try{
-            LineaPedido lineaPedidop = new LineaPedido(producto, -1, 4);
+            tiendaServicio.borrarProducto("P001");
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
+
+        System.out.println("//--Programacion defensiva--//");
+
+        System.out.println("Test 1: Alta producto duplicado");
         try{
-            Pedido pedidop = new Pedido(cliente, 12);
+            tiendaServicio.altaProducto(new Producto("P001", "Yogur2", "Lacteos", 2F, 20));
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            System.out.println("Se ha producido el siguinete error "+e.getMessage());
         }
+
+        System.out.println("Test 2: Alta producto con precio negativo");
         try{
-            Producto productop = new Producto("hidhiqhd3", "Yogur3", "Alimento", -3, 6);
+            Producto producto = new Producto("P003", "Yogur3", "Lacteos", -3, 6);
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            System.out.println("Se ha producido el siguinete error "+e.getMessage());
         }
+
+        System.out.println("Test 3: Alta producto con stock negativo");
         try{
-            Producto productop = new Producto("hidhiqhd3", "Yogur3", "Alimento", 1F, -1);
+            Producto producto = new Producto("P004", "Yogur4", "Lacteos", 1F, -1);
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            System.out.println("Se ha producido el siguinete error "+e.getMessage());
         }
+
+        System.out.println("Test 4: Alta pedido con iva fuera de rango");
         try{
-            producto2.setPrecioUnitario(-5);
+            Pedido pedidoFallo = new Pedido(juan, 1.5F);
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            System.out.println("Se ha producido el siguinete error "+e.getMessage());
         }
-        try{
-            producto2.decrementarStock(6);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-        try{
-            tiendaServicio.borrarProducto("hidhiqhdtyy");
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
+
+        System.out.println("//--Verificar el estado final del inventario--//");
+
+        System.out.println("Stock yogur "+yogur.getStock()+" (stock esperado:16)");
+        System.out.println("Stock yogur "+pan.getStock()+" (stock esperado:8)");
     }
 }

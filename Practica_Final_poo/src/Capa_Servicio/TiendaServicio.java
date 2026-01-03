@@ -7,14 +7,20 @@ import Capa_Dominio.Producto.Producto;
 import Capa_Repositorio.AlmacenDatos.RepositorioCliente;
 import Capa_Repositorio.AlmacenDatos.RepositorioPedido;
 import Capa_Repositorio.AlmacenDatos.RepositorioProducto;
+import Capa_Repositorio.Interfaces.ServicioCliente;
+import Capa_Repositorio.Interfaces.ServicioPedido;
+import Capa_Repositorio.Interfaces.ServicioProducto;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TiendaServicio {
 
-    private final RepositorioCliente repositorioCliente;
-    private final RepositorioProducto repositorioProducto;
-    private final RepositorioPedido repositorioPedido;
+    private final ServicioCliente repositorioCliente;
+    private final ServicioProducto repositorioProducto;
+    private final ServicioPedido repositorioPedido;
 
     public TiendaServicio() {
         this.repositorioCliente = new RepositorioCliente();
@@ -43,6 +49,7 @@ public class TiendaServicio {
                 return;
             }
         }
+        throw new IllegalArgumentException("No se encontro el producto con el codigo: " + codigo);
     }
 
     public List<Producto> consultarProductos(String nombre) {
@@ -116,7 +123,7 @@ public class TiendaServicio {
         }
         try {
             LineaPedido lineaPedido = new LineaPedido(producto, unidades, producto.getPrecioUnitario());
-            pedido.getLineaPedido().add(lineaPedido);
+            pedido.añadirLineaPedido(lineaPedido);
         } catch (Exception e) {
             throw e; //Se relanza la excepcion anterior
         }
@@ -128,10 +135,30 @@ public class TiendaServicio {
             throw new IllegalStateException("El pedido ya estaba confirmado.");
         }
 
-        for (LineaPedido lineaPedido : pedido.getLineaPedido()) {
-            if (lineaPedido.getProducto().getStock() < lineaPedido.getUnidades()){
-                throw new Exception("Error: Stock insuficiente para el producto " + lineaPedido.getProducto().getNombre());
+        List<String> productosConfirmados = new  ArrayList<String>();
+
+        for (LineaPedido lineaPedidoActual : pedido.getLineaPedido()) {
+
+            Producto productoActual = lineaPedidoActual.getProducto();
+            String codigoProducto = productoActual.getCodigoProducto();
+
+            if (productosConfirmados.contains(codigoProducto)) {
+                continue;
             }
+
+            int cantidadRequerida = 0;
+
+            for (LineaPedido lineaPedido : pedido.getLineaPedido()) {
+                if (lineaPedido.getProducto().getCodigoProducto().equals(codigoProducto)) {
+                    cantidadRequerida += lineaPedido.getUnidades();
+                }
+            }
+
+            if (productoActual.getStock() < cantidadRequerida){
+                throw  new Exception("No hay suficiente stock "+productoActual.getStock()+" del producto: " + productoActual.getNombre());
+            }
+
+            productosConfirmados.add(codigoProducto);
         }
 
         for (LineaPedido lineaPedido : pedido.getLineaPedido()) {
