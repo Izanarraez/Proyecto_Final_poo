@@ -4,16 +4,40 @@ import Capa_Dominio.Cliente.*;
 import Capa_Dominio.Pedido.LineaPedido;
 import Capa_Dominio.Pedido.Pedido;
 import Capa_Dominio.Producto.Producto;
+import Capa_Repositorio.AlmacenDatos.RepositorioCliente;
+import Capa_Repositorio.AlmacenDatos.RepositorioPedido;
+import Capa_Repositorio.AlmacenDatos.RepositorioProducto;
+import Capa_Repositorio.Interfaces.ServicioCliente;
+import Capa_Repositorio.Interfaces.ServicioPedido;
+import Capa_Repositorio.Interfaces.ServicioProducto;
 import Capa_Servicio.TiendaServicio;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+/**
+ * Clase de prueba.
+ *
+ * <p>
+ * Ejecuta un script lineal que verifica los casos de uso principales
+ * y las reglas de negocio.
+ * </p>
+ */
 public class Smoke {
+
+    /**
+     * Método principal que ejecuta las pruebas.
+     *
+     * @param args Argumentos de consola (no usados).
+     */
     public static void main(String[] args) {
 
         System.out.println("Clase Smoke");
 
-        TiendaServicio tiendaServicio = new TiendaServicio();
+        ServicioCliente repositorioCliente = new RepositorioCliente();
+        ServicioProducto repositorioProducto = new RepositorioProducto();
+        ServicioPedido repositorioPedido = new RepositorioPedido();
+
+        TiendaServicio tiendaServicio = new TiendaServicio(repositorioCliente,
+                                                            repositorioProducto,
+                                                            repositorioPedido);
 
         Cliente juan = null;
         Producto yogur = null, pan = null;

@@ -1,7 +1,5 @@
 package Capa_Repositorio.AlmacenDatos;
 
-import Capa_Dominio.Pedido.LineaPedido;
-import Capa_Dominio.Pedido.Pedido;
 import Capa_Dominio.Producto.Producto;
 import Capa_Repositorio.Interfaces.ServicioProducto;
 
@@ -9,14 +7,27 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Implementación en memoria del repositorio de productos.
+ * Almacena los productos en una lista interna.
+ */
 public class RepositorioProducto implements ServicioProducto {
 
     private final ArrayList<Producto> almacenProductos;
 
+    /**
+     * Inicializa el almacén de productos.
+     */
     public RepositorioProducto(){
         this.almacenProductos = new ArrayList<Producto>();
     }
 
+    /**
+     * {@inheritDoc}
+     * Valida que no exista ya un producto con el mismo código.
+     *
+     * @throws IllegalArgumentException Si el código está duplicado.
+     */
     @Override
     public void alta(Producto producto) {
 
@@ -28,6 +39,10 @@ public class RepositorioProducto implements ServicioProducto {
         almacenProductos.add(producto);
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void baja(String codigo) {
 
@@ -39,6 +54,9 @@ public class RepositorioProducto implements ServicioProducto {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Producto> consultar(String nombre) {
         ArrayList<Producto> productos = new ArrayList<Producto>();
@@ -51,6 +69,10 @@ public class RepositorioProducto implements ServicioProducto {
         return Collections.unmodifiableList(productos);
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Producto> listar() {
         return Collections.unmodifiableList(almacenProductos);
