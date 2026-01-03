@@ -12,9 +12,9 @@ import java.util.List;
 
 public class TiendaServicio {
 
-    RepositorioCliente repositorioCliente;
-    RepositorioProducto repositorioProducto;
-    RepositorioPedido repositorioPedido;
+    private final RepositorioCliente repositorioCliente;
+    private final RepositorioProducto repositorioProducto;
+    private final RepositorioPedido repositorioPedido;
 
     public TiendaServicio() {
         this.repositorioCliente = new RepositorioCliente();
@@ -27,7 +27,7 @@ public class TiendaServicio {
         this.repositorioProducto.alta(producto);
     }
 
-    public void ajustarStock(String codigo, int cantidad, boolean incremento) {
+    public void ajustarStock(String codigo, int cantidad, boolean incremento){
         for (Producto producto : this.repositorioProducto.listar()) {
             if (producto.getCodigoProducto().equals(codigo)){
                 try {
@@ -38,7 +38,7 @@ public class TiendaServicio {
                         producto.decrementarStock(cantidad);
                     }
                 }catch (Exception e){
-                    System.out.println("Error al ajustar stock: " + e.getMessage());
+                    throw new IllegalArgumentException("Error al ajustar stock: " + e.getMessage());
                 }
                 return;
             }
@@ -53,7 +53,7 @@ public class TiendaServicio {
         return this.repositorioProducto.listar();
     }
 
-    public void borrarProducto(String codigo) throws IllegalArgumentException{
+    public void borrarProducto(String codigo) throws Exception {
 
         boolean existeProducto = false;
         boolean pedidoConfirmadoEnProducto = false;
@@ -82,7 +82,7 @@ public class TiendaServicio {
         }
 
         if (pedidoConfirmadoEnProducto) {
-            throw new IllegalArgumentException("No se puede borrar: Producto asociado a un pedido confirmado.");
+            throw new Exception("No se puede borrar: Producto asociado a un pedido confirmado.");
         } else {
             repositorioProducto.baja(codigo);
         }
@@ -112,41 +112,32 @@ public class TiendaServicio {
 
     public void añadirLineaPedido(Pedido pedido, Producto producto, int unidades) {
         if (pedido.isConfirmado()) {
-            System.out.println("Error: No se pueden añadir líneas a un pedido confirmado.");
-            return;
+            throw new IllegalStateException("Error: No se pueden añadir líneas a un pedido confirmado.");
         }
         try {
             LineaPedido lineaPedido = new LineaPedido(producto, unidades, producto.getPrecioUnitario());
             pedido.getLineaPedido().add(lineaPedido);
         } catch (Exception e) {
-            System.out.println("Error al añadir línea de pedido: " + e.getMessage());
+            throw e; //Se relanza la excepcion anterior
         }
     }
 
-    public boolean confirmarPedido(Pedido pedido) {
+    public void confirmarPedido(Pedido pedido) throws Exception {
 
         if (pedido.isConfirmado()) {
-            System.out.println("El pedido ya estaba confirmado.");
-            return true;
+            throw new IllegalStateException("El pedido ya estaba confirmado.");
         }
 
         for (LineaPedido lineaPedido : pedido.getLineaPedido()) {
             if (lineaPedido.getProducto().getStock() < lineaPedido.getUnidades()){
-                System.out.println("Error: Stock insuficiente para el producto " + lineaPedido.getProducto().getNombre());
-                return false;
+                throw new Exception("Error: Stock insuficiente para el producto " + lineaPedido.getProducto().getNombre());
             }
         }
-        try {
-            for (LineaPedido lineaPedido : pedido.getLineaPedido()) {
-                lineaPedido.getProducto().decrementarStock(lineaPedido.getUnidades());
-            }
-            pedido.setConfirmado(true);
-            System.out.println("Pedido confirmado correctamente");
-            return true;
-        }catch ( Exception e){
-            System.out.println("Error al confirmar pedido: " + e.getMessage());
-            return false;
+
+        for (LineaPedido lineaPedido : pedido.getLineaPedido()) {
+            lineaPedido.getProducto().decrementarStock(lineaPedido.getUnidades());
         }
+        pedido.setConfirmado(true);
     }
 
     public List<Pedido> consultarPedido(String codigo) {

@@ -10,13 +10,60 @@ import Capa_Servicio.TiendaServicio;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Smoke {
     public static void main(String[] args) {
-        Cliente cliente = new Cliente("h111", "Juan", "89987987689");
-        Producto producto = new Producto("hidhiqhd", "Yogur", "Alimento", 1.5F, 6);
-        LineaPedido lineaPedido = new LineaPedido(producto, 4, producto.getPrecioUnitario());
-        Pedido pedido = new Pedido(cliente, 0.21F);
+
+        System.out.println("Clase Smoke");
+
         TiendaServicio tiendaServicio = new TiendaServicio();
+
+        System.out.println("Alta Clientes");
+        Cliente cliente = new Cliente("h111", "Juan", "89987987689");
+        Cliente cliente2 = new Cliente("h125", "Ana", "587496222");
+
+        try {
+            tiendaServicio.altaCliente(cliente);
+            tiendaServicio.altaCliente(cliente2);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("Alta Productos");
+        Producto producto = new Producto("hidhiqhd", "Yogur", "Alimento", 1.5F, 6);
         Producto producto2 = new Producto("hidhiqhd2", "Yogur2", "Alimento", 2F, 2);
+        Producto producto3 = new Producto("hidhiqhd3", "Sarten", "Utensilio", 12.5F, 5);
+
+        try {
+            tiendaServicio.altaProducto(producto);
+            tiendaServicio.altaProducto(producto2);
+            tiendaServicio.altaProducto(producto3);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("Alta Pedidos");
+        Pedido pedido = new Pedido(cliente, 0.21F);
         Pedido pedido2 = new Pedido(cliente, 0.21F);
+        Pedido pedido3 = new Pedido(cliente2, 0.21F);
+
+        try {
+            tiendaServicio.crearPedido(pedido);
+            tiendaServicio.crearPedido(pedido2);
+            tiendaServicio.crearPedido(pedido3);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("Alta Linea de Pedidos");
+        LineaPedido lineaPedido = new LineaPedido(producto, 4, producto.getPrecioUnitario());
+        LineaPedido lineaPedido2 = new LineaPedido(producto3, 5, producto.getPrecioUnitario());
+
+        try {
+            tiendaServicio.añadirLineaPedido(pedido, lineaPedido.getProducto(), lineaPedido.getUnidades());
+            tiendaServicio.añadirLineaPedido(pedido2, lineaPedido.getProducto(), lineaPedido.getUnidades());
+            tiendaServicio.añadirLineaPedido(pedido3, lineaPedido2.getProducto(), lineaPedido.getUnidades());
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
         try {
 
             tiendaServicio.crearPedido(pedido);

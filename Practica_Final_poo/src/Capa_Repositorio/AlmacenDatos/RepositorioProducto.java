@@ -19,6 +19,12 @@ public class RepositorioProducto implements ServicioProducto {
 
     @Override
     public void alta(Producto producto) {
+
+        for (Producto productoAlmacenado : this.almacenProductos) {
+            if (productoAlmacenado.getCodigoProducto().equals(producto.getCodigoProducto())) {
+                throw  new IllegalArgumentException("Id de producto ya existente");
+            }
+        }
         almacenProductos.add(producto);
     }
 

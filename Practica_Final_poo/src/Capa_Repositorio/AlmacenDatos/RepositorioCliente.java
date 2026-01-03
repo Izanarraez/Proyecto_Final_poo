@@ -17,6 +17,12 @@ public class RepositorioCliente implements ServicioCliente {
 
     @Override
     public void alta(Cliente cliente) {
+
+        for(Cliente clienteAlmacenado : almacenClientes){
+            if(clienteAlmacenado.getCodcliente().equals(cliente.getCodcliente())){
+                throw  new IllegalArgumentException("Id de cliente ya existe");
+            }
+        }
         almacenClientes.add(cliente);
     }
 

@@ -3,6 +3,8 @@ package Capa_Dominio.Pedido;
 import Capa_Dominio.Cliente.Cliente;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Pedido {
     private Cliente cliente;
@@ -20,12 +22,20 @@ public class Pedido {
     public Cliente getCliente() {
         return this.cliente;
     }
-    public ArrayList<LineaPedido> getLineaPedido() {
-        return this.lineaPedido;
+    public List<LineaPedido> getLineaPedido() {
+        return Collections.unmodifiableList(this.lineaPedido);
     }
     public float getIva() {
         return this.iva;
     }
+
+    public void añadirLineaPedido(LineaPedido lineaPedido) {
+        if (this.confirmado) {
+            throw new IllegalStateException("No se pueden añadir líneas a un pedido confirmado.");
+        }
+        this.lineaPedido.add(lineaPedido);
+    }
+
     public boolean isConfirmado() {
         return confirmado;
     }
