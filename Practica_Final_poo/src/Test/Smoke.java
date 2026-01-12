@@ -143,9 +143,62 @@ public class Smoke {
             System.out.println("Se ha producido el siguinete error "+e.getMessage());
         }
 
-        System.out.println("//--Verificar el estado final del inventario--//");
+        System.out.println("Test 5: Ajustar de stock");
 
-        System.out.println("Stock yogur "+yogur.getStock()+" (stock esperado:16)");
-        System.out.println("Stock yogur "+pan.getStock()+" (stock esperado:8)");
+        try {
+            tiendaServicio.ajustarStock("P002", 5, true);
+            tiendaServicio.ajustarStock("P002", 1, false);
+        } catch (Exception e) {
+            System.out.println("Error en ajustar el stock: " + e.getMessage());
+        }
+
+        System.out.println("Test 6: Listar productos");
+        try{
+            for (Producto producto : tiendaServicio.listadoProductos()) {
+                System.out.println("Nombre producto:" + producto.getNombre() + " Stock:" + producto.getStock());
+            }
+        }catch (Exception e){
+            System.out.println("Se ha producido el siguinete error "+e.getMessage());
+        }
+
+
+        System.out.println("Test 7: Busqueda de productos");
+        try{
+            for (Producto producto : tiendaServicio.consultarProductos("ogur")) {
+                System.out.println("Nombre producto:" + producto.getNombre());
+            }
+        }catch (Exception e){
+            System.out.println("Se ha producido el siguinete error "+e.getMessage());
+        }
+
+
+        System.out.println("Test 8: Listar clientes:");
+        try{
+            for (Cliente cliente : tiendaServicio.listadoClientes()) {
+                System.out.println("Nombre cliente:"+ cliente.getNombre() + " ID:" + cliente.getCodcliente());
+            }
+        }catch (Exception e){
+            System.out.println("Se ha producido el siguinete error "+e.getMessage());
+        }
+
+
+        System.out.println("Test 9: Busqueda de clientes");
+        try{
+            for (Cliente cliente : tiendaServicio.consultarClientes("Juan")) {
+                System.out.println("Nombre cliente" + cliente.getNombre());
+            }
+        }catch (Exception e){
+            System.out.println("Se ha producido el siguinete error "+e.getMessage());
+        }
+
+        System.out.println("Test 10: Total Facturado");
+        try {
+            float totalFacturado = tiendaServicio.calcularTotalFacturado();
+            System.out.println("Total Facturado:"+ totalFacturado);
+        } catch (Exception e) {
+            System.out.println("Error al calcular la facturacion total: " + e.getMessage());
+        }
+
+
     }
 }

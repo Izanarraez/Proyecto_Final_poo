@@ -193,7 +193,7 @@ public class TiendaServicio {
             LineaPedido lineaPedido = new LineaPedido(producto, unidades, producto.getPrecioUnitario());
             pedido.añadirLineaPedido(lineaPedido);
         } catch (Exception e) {
-            throw e; //Se relanza la excepcion anterior
+            throw e; //Relanza excepcion
         }
     }
 
@@ -256,6 +256,21 @@ public class TiendaServicio {
      */
     public List<Pedido> consultarPedido(String codigo) {
         return repositorioPedido.consultar(codigo);
+    }
+
+    /**
+     * Calcula el importe total acumulado de todos los pedidos confirmados.
+     *
+     * @return Suma total con IVA.
+     */
+    public float calcularTotalFacturado() {
+        float total = 0f;
+        for (Pedido pedido : this.repositorioPedido.listar()) {
+            if (pedido.isConfirmado()) {
+                total += pedido.calcularTotalConIva();
+            }
+        }
+        return total;
     }
 
 }
