@@ -173,7 +173,7 @@ public class Smoke {
         }
 
         System.out.println("Test 10: Total sin iva");
-        System.out.println("Precio total sin iva: " + pedido.calcularTotalSinIva());
+        System.out.printf("Precio total con iva: %.2f%n: ", pedido.calcularTotalSinIva());
 
         System.out.println("Test 11: Total Facturado");
         try {
@@ -182,8 +182,5 @@ public class Smoke {
         } catch (Exception e) {
             System.out.println("Error al calcular la facturacion total: " + e.getMessage());
         }
-
-
-
     }
 }
