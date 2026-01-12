@@ -153,39 +153,23 @@ public class Smoke {
         }
 
         System.out.println("Test 6: Listar productos");
-        try{
-            for (Producto producto : tiendaServicio.listadoProductos()) {
-                System.out.println("Nombre producto:" + producto.getNombre() + " Stock:" + producto.getStock());
-            }
-        }catch (Exception e){
-            System.out.println("Se ha producido el siguinete error "+e.getMessage());
+        for (Producto producto : tiendaServicio.listadoProductos()) {
+            System.out.println("Nombre producto:" + producto.getNombre() + " Stock:" + producto.getStock());
         }
 
         System.out.println("Test 7: Busqueda de productos");
-        try{
-            for (Producto producto : tiendaServicio.consultarProductos("ogur")) {
-                System.out.println("Nombre producto:" + producto.getNombre());
-            }
-        }catch (Exception e){
-            System.out.println("Se ha producido el siguinete error "+e.getMessage());
+        for (Producto producto : tiendaServicio.consultarProductos("ogur")) {
+            System.out.println("Nombre producto:" + producto.getNombre());
         }
 
         System.out.println("Test 8: Listar clientes:");
-        try{
-            for (Cliente cliente : tiendaServicio.listadoClientes()) {
-                System.out.println("Nombre cliente:"+ cliente.getNombre() + " ID:" + cliente.getCodcliente());
-            }
-        }catch (Exception e){
-            System.out.println("Se ha producido el siguinete error "+e.getMessage());
+        for (Cliente cliente : tiendaServicio.listadoClientes()) {
+            System.out.println("Nombre cliente:"+ cliente.getNombre() + " ID:" + cliente.getCodcliente());
         }
 
         System.out.println("Test 9: Busqueda de clientes");
-        try{
-            for (Cliente cliente : tiendaServicio.consultarClientes("Juan")) {
-                System.out.println("Nombre cliente" + cliente.getNombre());
-            }
-        }catch (Exception e){
-            System.out.println("Se ha producido el siguinete error "+e.getMessage());
+        for (Cliente cliente : tiendaServicio.consultarClientes("Juan")) {
+            System.out.println("Nombre cliente" + cliente.getNombre());
         }
 
         System.out.println("Test 10: Total Facturado");
