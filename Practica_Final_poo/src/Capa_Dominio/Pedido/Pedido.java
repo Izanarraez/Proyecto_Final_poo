@@ -102,4 +102,17 @@ public class Pedido {
         }
         return total * (1 + iva);
     }
+
+    /**
+     * Calcula el importe total del pedido sin el IVA.
+     *
+     * @return Importe total sin iva.
+     */
+    public float calcularTotalSinIva() {
+        float total = 0;
+        for (LineaPedido linea : lineaPedido) {
+            total += linea.getUnidades() * linea.getPrecioAplicado();
+        }
+        return total;
+    }
 }

@@ -172,13 +172,18 @@ public class Smoke {
             System.out.println("Nombre cliente" + cliente.getNombre());
         }
 
-        System.out.println("Test 10: Total Facturado");
+        System.out.println("Test 10: Total sin iva");
+        System.out.println("Precio total sin iva: " + pedido.calcularTotalSinIva());
+
+        System.out.println("Test 11: Total Facturado");
         try {
             float totalFacturado = tiendaServicio.calcularTotalFacturado();
             System.out.println("Total Facturado:"+ totalFacturado);
         } catch (Exception e) {
             System.out.println("Error al calcular la facturacion total: " + e.getMessage());
         }
+
+
 
     }
 }
