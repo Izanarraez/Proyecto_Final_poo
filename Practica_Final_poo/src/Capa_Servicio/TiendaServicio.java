@@ -223,7 +223,15 @@ public class TiendaServicio {
             Producto productoActual = lineaPedidoActual.getProducto();
             String codigoProducto = productoActual.getCodigoProducto();
 
-            if (productosConfirmados.contains(codigoProducto)) {
+            boolean procesado = false;
+            for (String codigoConfirmado : productosConfirmados) {
+                if (codigoConfirmado.equals(codigoProducto)) {
+                    procesado = true;
+                    break;
+                }
+            }
+
+            if (procesado) {
                 continue;
             }
 

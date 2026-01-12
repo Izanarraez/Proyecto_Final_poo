@@ -62,7 +62,7 @@ public class RepositorioProducto implements ServicioProducto {
         ArrayList<Producto> productos = new ArrayList<Producto>();
 
         for(Producto producto: almacenProductos){
-            if (producto.getNombre().toLowerCase().contains(nombre.toLowerCase())){
+            if (producto.getNombre().toLowerCase().equals(nombre.toLowerCase())){
                 productos.add(producto);
             }
         }

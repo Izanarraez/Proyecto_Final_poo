@@ -161,7 +161,6 @@ public class Smoke {
             System.out.println("Se ha producido el siguinete error "+e.getMessage());
         }
 
-
         System.out.println("Test 7: Busqueda de productos");
         try{
             for (Producto producto : tiendaServicio.consultarProductos("ogur")) {
@@ -171,7 +170,6 @@ public class Smoke {
             System.out.println("Se ha producido el siguinete error "+e.getMessage());
         }
 
-
         System.out.println("Test 8: Listar clientes:");
         try{
             for (Cliente cliente : tiendaServicio.listadoClientes()) {
@@ -180,7 +178,6 @@ public class Smoke {
         }catch (Exception e){
             System.out.println("Se ha producido el siguinete error "+e.getMessage());
         }
-
 
         System.out.println("Test 9: Busqueda de clientes");
         try{
@@ -198,7 +195,6 @@ public class Smoke {
         } catch (Exception e) {
             System.out.println("Error al calcular la facturacion total: " + e.getMessage());
         }
-
 
     }
 }
